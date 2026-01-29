@@ -5,6 +5,7 @@ import { FaPlus, FaMinus } from 'react-icons/fa6';
 import { FaRegWindowClose } from 'react-icons/fa';
 import CartTotal from './CartTotal';
 import { toast } from 'react-toastify';
+import Footer from '../Components/Footer';
 
 export default function Cart() {
   const {
@@ -85,7 +86,8 @@ export default function Cart() {
   };
 
   return (
-    <section className="max-padd-container mt-24">
+    <>
+      <section className="max-padd-container mt-24">
       <Title title1="Cart" title2="List" titlestyles="h3" />
 
       <div className="space-y-4 mt-6">
@@ -171,5 +173,7 @@ export default function Cart() {
         </div>
       </div>
     </section>
+    <Footer/>
+    </>
   );
 }

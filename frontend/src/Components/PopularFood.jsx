@@ -15,51 +15,44 @@ function PopularFood() {
   useEffect(() => {
     if (Array.isArray(foods)) {
       const data = foods.filter(item => item.popular === true)
-      setPopularFoods(data.slice(0, 6))
+      setPopularFoods(data.slice(0, 8))
     }
   }, [foods])
 
   return (
-    <section className="max-padd-container pt-16">
+    <section className="max-padd-container py-14 sm:py-20">
+
       <Title
-        title1={"Popular"}
-        title2={"Foods"}
-        titlestyles={"text-center !pb-16"}
-        parastyle={"!block"}
+        title1="Popular"
+        title2="Foods"
+        titlestyles="text-center"
+        parastyle="block"
       />
 
-      {/* SWIPER */}
       <Swiper
-        slidesPerView={1}
-        spaceBetween={20}
         autoplay={{
-          delay: 3500,
+          delay: 3000,
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
+        spaceBetween={16}
+        slidesPerView={1}
         breakpoints={{
-          700: {
-            slidesPerView: 2,
-            spaceBetween: 25,
-          },
-          1050: {
-            slidesPerView: 3,
-            spaceBetween: 25,
-          },
-          1400: {
-            slidesPerView: 4,
-            spaceBetween: 25,
-          },
+          480: { slidesPerView: 1.3 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+          1280: { slidesPerView: 4 },
         }}
         modules={[Autoplay, Pagination]}
-        className="h-[255px]"
+        className="mt-10 !pb-12"
       >
         {popularFoods.map(food => (
-          <SwiperSlide key={food._id} className="pl-16">
+          <SwiperSlide key={food._id} className="px-2">
             <Item food={food} />
           </SwiperSlide>
         ))}
       </Swiper>
+
     </section>
   )
 }

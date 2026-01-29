@@ -60,27 +60,28 @@ export default function Order() {
   }
 
   return (
-    <section className="max-padd-container mt-24">
-      <Title title1="Orders" title2="List" titlestyles="h3" />
+    <section className="max-padd-container mt-24 pb-20">
+      <Title title1="Orders" title2="List" titlestyles="text-center sm:text-left" />
 
       {orderItems.length === 0 ? (
-        <p className="mt-6">No orders found</p>
+        <p className="mt-6 text-center sm:text-left">No orders found</p>
       ) : (
-        <div className="flex flex-col gap-4 mt-6">
+        <div className="flex flex-col gap-6 mt-6">
           {orderItems.map((item, i) => (
             <div
               key={i}
-              className="flex justify-between text-gray-700 items-center bg-deep p-4 rounded-xl"
+              className="bg-deep p-4 sm:p-6 rounded-xl shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
             >
               {/* LEFT */}
-              <div className="flex gap-x-3 w-full">
+              <div className="flex gap-4">
                 <img
                   src={item.productId?.image}
                   alt={item.productId?.name}
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-20 h-20 object-cover rounded-lg"
                 />
-                <div className="flex flex-col gap-1 text-sm">
-                  <h5 className="font-semibold">
+
+                <div className="flex flex-col text-sm gap-1">
+                  <h5 className="font-semibold text-base">
                     {item.productId?.name}
                   </h5>
 
@@ -89,11 +90,11 @@ export default function Order() {
                     {item.productId?.price?.[item.size]}
                   </p>
 
-                  <p>Quantity: {item.quantity}</p>
-                  <p>Size: {item.size}</p>
-
                   <p>
-                    Date:{" "}
+                    Qty: {item.quantity} | Size: {item.size}
+                  </p>
+
+                  <p className="text-gray-500 text-xs">
                     {new Date(item.date).toLocaleDateString("en-US", {
                       weekday: "short",
                       month: "short",
@@ -102,18 +103,21 @@ export default function Order() {
                     })}
                   </p>
 
-                  <p>Payment: {item.paymentMethod}</p>
+                  <p className="text-xs">Payment: {item.paymentMethod}</p>
                 </div>
               </div>
 
               {/* RIGHT */}
-              <div className="flex flex-col items-end gap-2">
-                <div className="flex items-center gap-2 text-sm text-green-700 font-medium">
+              <div className="flex sm:flex-col justify-between sm:justify-center items-center gap-3 w-full sm:w-auto">
+                <div className="flex items-center gap-2 text-sm font-medium text-green-700">
                   <span className="w-2 h-2 bg-green-600 rounded-full"></span>
                   {item.status}
                 </div>
 
-                <button className="bg-green-700 text-white px-4 py-1 rounded-xl w-36 text-sm hover:bg-green-800 transition" onClick={loadorderData}>
+                <button
+                  onClick={loadorderData}
+                  className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-800 transition w-full sm:w-36"
+                >
                   Track Order
                 </button>
               </div>

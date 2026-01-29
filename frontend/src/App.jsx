@@ -29,7 +29,6 @@ export default function App() {
         pauseOnHover
         theme="light"
       />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/menu" element={<Menu />} />

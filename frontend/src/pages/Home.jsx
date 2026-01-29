@@ -11,7 +11,7 @@ const Home = () => {
       <Features/>
       <PopularFood/>
       <Testmonital/>
-      <div className='max-padd-container'>
+      <div>
         <Footer/>
       </div>
     </>

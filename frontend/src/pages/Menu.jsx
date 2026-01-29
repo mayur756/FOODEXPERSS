@@ -5,6 +5,7 @@ import { shopcontext } from '../context/Shopcontext'
 import { categories } from '../assets/data'
 import Title from '../Components/Title'
 import Item from '../Components/Item'
+import Footer from '../Components/Footer'
 export default function Menu() {
   const {foods} = useContext(shopcontext)
   const [category,setCategory]=useState([])
@@ -73,7 +74,8 @@ export default function Menu() {
   }
   const totalpage=Math.ceil(filterFoods.length/itemsPerPage)
   return (
-<section className="w-screen  mt-24 max-padd-container  ">
+    <>
+      <section className="w-screen  mt-24 max-padd-container  ">
   {/* search box */}
   <div className="max-padd-container">
     <div className="flex justify-center">
@@ -139,5 +141,7 @@ export default function Menu() {
       <button disabled={currentpage == totalpage} onClick={()=>setCurrentpage((prev)=>prev-1)} className={`btn-secondary !py-1 !px-3 ${currentpage ===totalpage && "opacity-50 cursor-not-allowed"}`}>Next</button>
     </div>
 </section>
+  <Footer/>
+    </>
   )
 }
