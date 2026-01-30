@@ -92,121 +92,150 @@ function List({ token }) {
   }, [token])
 
   return (
-    <div className="py-12 px-2 sm:px-8">
-      <div className='flex flex-col gap-2'>
-        <div className='grid grid-cols-[1fr_3fr_2fr_2fr_1fr] px-2 py-1 bg-light font-bold text-sm mb-3 rounded'>
-          <h5>Image</h5>
-          <h5>Name</h5>
-          <h5>Category</h5>
-          <h5>Price</h5>
-          <h5>Actions</h5>
+     <div className="py-6 px-2 sm:px-6 max-w-6xl mx-auto">
+
+    <h2 className="text-xl font-bold mb-4">All Products</h2>
+
+    {/* Desktop Header */}
+    <div className="hidden md:grid grid-cols-[80px_2fr_1fr_2fr_120px] bg-gray-100 p-3 rounded font-semibold">
+      <div>Image</div>
+      <div>Name</div>
+      <div>Category</div>
+      <div>Price</div>
+      <div>Actions</div>
+    </div>
+
+    {/* Product List */}
+    <div className="space-y-3 mt-3">
+      {list.map((item) => (
+        <div
+          key={item._id}
+          className="grid grid-cols-1 md:grid-cols-[80px_2fr_1fr_2fr_120px] gap-3 items-center bg-white shadow rounded p-3"
+        >
+          {/* Image */}
+          <img
+            src={item.image || upload_icon}
+            className="w-16 h-16 rounded object-cover mx-auto md:mx-0"
+          />
+
+          {/* Name */}
+          <div className="font-medium text-center md:text-left">
+            {item.name}
+          </div>
+
+          {/* Category */}
+          <div className="text-sm text-gray-500 text-center md:text-left">
+            {item.category}
+          </div>
+
+          {/* Prices */}
+          <div className="text-sm text-center md:text-left">
+            {Object.entries(item.price).map(([s, p]) => (
+              <div key={s}>
+                {s}: {currency}{p}
+              </div>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className="flex justify-center md:justify-start gap-4 text-xl">
+            <TbEdit
+              className="text-blue-500 cursor-pointer"
+              onClick={() => {
+                setEditItem(item)
+                setPopular(item.popular)
+                setPrices(
+                  JSON.stringify(
+                    Object.entries(item.price).map(([size, price]) => ({
+                      size,
+                      price
+                    }))
+                  )
+                )
+              }}
+            />
+            <TbTrash
+              className="text-red-500 cursor-pointer"
+              onClick={() => removeProduct(item._id)}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* UPDATE MODAL */}
+    {editItem && (
+      <div className="fixed inset-0 bg-black/50 flex justify-center items-center px-2">
+        <div className="bg-white p-4 sm:p-6 rounded-lg w-full max-w-md space-y-3">
+
+          <h3 className="text-lg font-bold">Update Product</h3>
+
+          <input
+            className="w-full border p-2 rounded"
+            value={editItem.name}
+            onChange={e => setEditItem({ ...editItem, name: e.target.value })}
+            placeholder="Product name"
+          />
+
+          <input
+            className="w-full border p-2 rounded"
+            value={editItem.category}
+            onChange={e => setEditItem({ ...editItem, category: e.target.value })}
+            placeholder="Category"
+          />
+
+          <textarea
+            className="w-full border p-2 rounded"
+            rows={4}
+            value={prices}
+            onChange={e => setPrices(e.target.value)}
+            placeholder='[{"size":"S","price":100}]'
+          />
+
+          {/* Image */}
+          <input
+            type="file"
+            onChange={e => setImage(e.target.files[0])}
+          />
+
+          {image && (
+            <img
+              src={URL.createObjectURL(image)}
+              className="w-24 h-24 object-cover rounded"
+            />
+          )}
+
+          {/* Popular */}
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={popular}
+              onChange={e => setPopular(e.target.checked)}
+            />
+            Popular product
+          </label>
+
+          <div className="flex justify-end gap-3 pt-2">
+            <button
+              className="px-4 py-2 border rounded"
+              onClick={() => setEditItem(null)}
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={updateProduct}
+              className="bg-black text-white px-4 py-2 rounded"
+            >
+              Update
+            </button>
+          </div>
+
         </div>
       </div>
+    )}
 
-      <div>
-        {list.map(item => (
-          <div
-            key={item._id}
-            className="grid grid-cols-[1fr_3fr_2fr_2fr_1fr] gap-2 p-2 bg-light mb-2 rounded items-center"
-          >
-            <img
-              src={item.image || upload_icon}
-              className="w-12 h-12 rounded object-cover"
-            />
-            <div>{item.name}</div>
-            <div>{item.category}</div>
-            <div>
-              {Object.entries(item.price).map(([s, p]) => (
-                <div key={s}>{s}: {currency}{p}</div>
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <TbEdit
-                className="cursor-pointer text-blue-500"
-                onClick={() => {
-                  setEditItem(item)
-                  setPopular(item.popular)
-                  setPrices(
-                    JSON.stringify(
-                      Object.entries(item.price).map(([size, price]) => ({
-                        size,
-                        price
-                      }))
-                    )
-                  )
-                }}
-              />
-              <TbTrash
-                className="cursor-pointer text-red-500"
-                onClick={() => removeProduct(item._id)}
-              />
-            </div>
-          </div>
-        ))}
-
-        {/* UPDATE MODAL */}
-        {editItem && (
-          <div className="fixed inset-0 bg-black/40 flex justify-center items-center">
-            <div className="bg-white p-6 rounded w-[400px] space-y-3">
-
-              <h3 className="font-bold">Update Product</h3>
-
-              <input
-                className="border p-2 w-full"
-                value={editItem.name}
-                onChange={e => setEditItem({ ...editItem, name: e.target.value })}
-              />
-
-              <input
-                className="border p-2 w-full"
-                value={editItem.category}
-                onChange={e => setEditItem({ ...editItem, category: e.target.value })}
-              />
-
-              <textarea
-                className="border p-2 w-full"
-                value={prices}
-                onChange={e => setPrices(e.target.value)}
-              />
-
-              {/* IMAGE UPLOAD */}
-              <input
-                type="file"
-                onChange={e => setImage(e.target.files[0])}
-              />
-              {image && (
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="Preview"
-                  className="w-24 h-24 object-cover rounded mt-2"
-                />
-              )}
-
-              {/* POPULAR CHECKBOX */}
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={popular}
-                  onChange={e => setPopular(e.target.checked)}
-                />
-                Popular Product
-              </label>
-
-              <div className="flex justify-end gap-3">
-                <button onClick={() => setEditItem(null)}>Cancel</button>
-                <button
-                  onClick={updateProduct}
-                  className="bg-black text-white px-4 py-2 rounded"
-                >
-                  Update
-                </button>
-              </div>
-
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+  </div>
   )
 }
 

@@ -45,41 +45,48 @@ const AdminOrders = ({ token, currency }) => {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-6">All Orders</h2>
+     <div className="p-3 sm:p-6 max-w-7xl mx-auto">
+    <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
+      All Orders
+    </h2>
 
-      <div className="flex flex-col gap-4">
-        {orders.map((order) => (
-          <div
-            key={order._id}
-            className="flex flex-col md:flex-row justify-between items-start bg-green-50 p-4 rounded-xl gap-4"
-          >
-            {/* LEFT */}
-            <div className="text-sm text-gray-700 space-y-1">
-              <p>
-                <b>User:</b> {order.userId?.name} ({order.userId?.email})
-              </p>
-              <p>
-                <b>Items:</b>{" "}
-                {order.items.map((item, i) => (
-                  <span key={i}>
-                    {item.productId?.name || item.name} x {item.quantity}
-                    {i !== order.items.length - 1 && ", "}
+    <div className="flex flex-col gap-4">
+      {orders.map((order) => (
+        <div
+          key={order._id}
+          className="bg-white shadow rounded-xl p-4 flex flex-col lg:grid lg:grid-cols-3 gap-4"
+        >
+          {/* LEFT - User & Address */}
+          <div className="text-sm text-gray-700 space-y-1">
+            <p>
+              <b>User:</b> {order.userId?.name}
+            </p>
+            <p className="break-all">{order.userId?.email}</p>
+
+            <p className="mt-2">
+              <b>Address:</b> {order.address.city},{" "}
+              {order.address.state}, {order.address.country}
+            </p>
+            <p>
+              <b>Phone:</b> {order.address.phone}
+            </p>
+          </div>
+
+          {/* MIDDLE - Items */}
+          <div className="text-sm text-gray-700">
+            <p className="font-semibold mb-1">Items</p>
+            <div className="space-y-1">
+              {order.items.map((item, i) => (
+                <div key={i} className="flex justify-between">
+                  <span>
+                    {item.productId?.name || item.name}
                   </span>
-                ))}
-              </p>
-              <p>
-                <b>Address:</b>{" "}
-                {order.address.city}, {order.address.state},{" "}
-                {order.address.country}
-              </p>
-              <p>
-                <b>Phone:</b> {order.address.phone}
-              </p>
+                  <span>x {item.quantity}</span>
+                </div>
+              ))}
             </div>
 
-            {/* MIDDLE */}
-            <div className="text-sm text-gray-700 space-y-1">
+            <div className="mt-3 space-y-1">
               <p>
                 <b>Total Items:</b> {order.items.length}
               </p>
@@ -89,9 +96,13 @@ const AdminOrders = ({ token, currency }) => {
               <p>
                 <b>Payment:</b>{" "}
                 {order.paymentStatus === "Paid" ? (
-                  <span className="text-green-600 font-semibold">Done</span>
+                  <span className="text-green-600 font-semibold">
+                    Done
+                  </span>
                 ) : (
-                  <span className="text-red-600 font-semibold">Pending</span>
+                  <span className="text-red-600 font-semibold">
+                    Pending
+                  </span>
                 )}
               </p>
               <p>
@@ -99,30 +110,31 @@ const AdminOrders = ({ token, currency }) => {
                 {new Date(order.createdAt).toLocaleDateString()}
               </p>
             </div>
-
-            {/* RIGHT */}
-            <div className="flex flex-col items-end gap-3">
-              <p className="font-semibold">
-                Price: {currency}
-                {order.amount}
-              </p>
-
-              <select
-                onChange={(e) => statusHandler(e, order._id)}
-                value={order.status}
-                className="p-1 border rounded-md text-sm"
-              >
-                <option value="Order Placed">Order Placed</option>
-                <option value="Packing">Packing</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Out for Delivery">Out for Delivery</option>
-                <option value="Delivered">Delivered</option>
-              </select>
-            </div>
           </div>
-        ))}
-      </div>
+
+          {/* RIGHT - Price & Status */}
+          <div className="flex flex-col justify-between gap-3">
+            <p className="text-lg font-semibold">
+              {currency}
+              {order.amount}
+            </p>
+
+            <select
+              value={order.status}
+              onChange={(e) => statusHandler(e, order._id)}
+              className="border p-2 rounded-md w-full"
+            >
+              <option value="Order Placed">Order Placed</option>
+              <option value="Packing">Packing</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Out for Delivery">Out for Delivery</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+        </div>
+      ))}
     </div>
+  </div>
   );
 };
 
