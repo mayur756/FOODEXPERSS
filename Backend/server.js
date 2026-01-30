@@ -18,7 +18,15 @@ connectCloudinary()
 //middlware setup
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://foodexperss-c3u3.vercel.app/",
+    "https://foodexperss-mu.vercel.app/"
+  ],
+  credentials: true
+}));
 
 
 //define api routes

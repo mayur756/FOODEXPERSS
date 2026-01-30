@@ -22,7 +22,7 @@ const AdminOrders = ({ token, currency }) => {
   const statusHandler = async (e, orderId) => {
     try {
       await axios.post(
-        `http://localhost:4000/api/order/status`,
+        `https://foodexpress-3.onrender.com/api/order/status`,
         { orderId, status: e.target.value },
         { headers: { Authorization: `Bearer ${token}` } }
       );
